@@ -9,9 +9,7 @@ import (
 	"golang.org/x/sys/cpu"
 )
 
-// ============================
-//        NO PADDING
-// ============================
+// --- Section: No padding ---
 
 type RingNoPad struct {
 	head atomic.Uint64
@@ -32,9 +30,7 @@ func (r *RingNoPad) Dequeue() uint64 {
 	return v
 }
 
-// ============================
-//         WITH PADDING
-// ============================
+// --- Section: With padding ---
 
 type RingPad struct {
 	_    cpu.CacheLinePad
@@ -58,9 +54,7 @@ func (r *RingPad) Dequeue() uint64 {
 	return v
 }
 
-// ============================
-//          BENCH CORE
-// ============================
+// --- Section: Bench core ---
 
 type ringIface interface {
 	Enqueue(uint64)
@@ -106,9 +100,7 @@ func benchRing(b *testing.B, ring ringIface) {
 	runtime.KeepAlive(ring)
 }
 
-// ============================
-//          BENCHMARKS
-// ============================
+// --- Section: Benchmarks ---
 
 func BenchmarkRingNoPad(b *testing.B) {
 	r := &RingNoPad{}

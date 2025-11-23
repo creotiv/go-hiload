@@ -16,7 +16,7 @@ const (
 	commitEvery = 64       // group commit frequency
 )
 
-// ----------- alignment helper -----------
+// --- Section: Alignment helper ---
 
 func aligned(size int) []byte {
 	mem := make([]byte, size+4095)
@@ -26,9 +26,7 @@ func aligned(size int) []byte {
 	return mem[start : start+size]
 }
 
-// =========================================
-// ============ BUFFERED I/O ===============
-// =========================================
+// --- Section: Buffered I/O ---
 
 var (
 	bufOnce sync.Once
@@ -62,7 +60,7 @@ func BenchmarkBufferedWrite(b *testing.B) {
 	b.StopTimer()
 }
 
-// -------- buffered + sync (group commit) --------
+// --- Section: Buffered + sync (group commit) ---
 
 func BenchmarkBufferedWriteSync(b *testing.B) {
 	setupBuffered(b)
@@ -84,9 +82,7 @@ func BenchmarkBufferedWriteSync(b *testing.B) {
 	b.StopTimer()
 }
 
-// =========================================
-// ============= O_DIRECT I/O =============
-// =========================================
+// --- Section: O_DIRECT I/O ---
 
 var (
 	dirOnce sync.Once
@@ -131,7 +127,7 @@ func BenchmarkDirectWrite(b *testing.B) {
 	b.StopTimer()
 }
 
-// ------- direct + sync (fdatasync group commit) -------
+// --- Section: Direct + sync (fdatasync group commit) ---
 
 func BenchmarkDirectWriteSync(b *testing.B) {
 	setupDirect(b)
@@ -157,7 +153,7 @@ func BenchmarkDirectWriteSync(b *testing.B) {
 	b.StopTimer()
 }
 
-// ========== cleanup ==========
+// --- Section: Cleanup ---
 
 func TestMain(m *testing.M) {
 	code := m.Run()

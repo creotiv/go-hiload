@@ -309,7 +309,7 @@ Use **direct/O_DIRECT-style writes** when building:
 Use **buffered writes** only when data loss is OK and jitter does not break correctness.
 
 
-## What results would you see on a real physical Linux machine?
+# What results would you see on a real physical Linux machine?
 ### On physical x86 Linux with NVMe:
 ```
 BufferedWrite     ~200 ns/op

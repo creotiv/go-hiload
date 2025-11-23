@@ -31,9 +31,7 @@ func cpuHotWork() uint64 {
 	return x
 }
 
-// ============================
-//     NO PINNING (migrates)
-// ============================
+// --- Section: No pinning (migrates) ---
 
 func BenchmarkNoPinning(b *testing.B) {
 	hammerScheduler() // FORCE MIGRATIONS
@@ -56,9 +54,7 @@ func BenchmarkNoPinning(b *testing.B) {
 	b.StopTimer()
 }
 
-// ============================
-//     PINNED (stable core)
-// ============================
+// --- Section: Pinned (stable core) ---
 
 func BenchmarkPinned(b *testing.B) {
 	hammerScheduler() // same load

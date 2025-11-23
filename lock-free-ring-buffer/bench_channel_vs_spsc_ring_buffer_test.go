@@ -9,9 +9,7 @@ import (
 	"golang.org/x/sys/cpu"
 )
 
-// ====================================
-//   Lock-free SPSC padded ring buffer
-// ====================================
+// --- Section: Lock-free SPSC padded ring buffer ---
 
 type Ring struct {
 	_    cpu.CacheLinePad
@@ -45,9 +43,7 @@ func (r *Ring) Dequeue() uint64 {
 	return v
 }
 
-// ====================================
-//            CHANNEL BENCH
-// ====================================
+// --- Section: Channel bench ---
 
 func benchChannel(b *testing.B, ch chan uint64) {
 	start := make(chan struct{})
@@ -85,9 +81,7 @@ func BenchmarkChannel(b *testing.B) {
 	benchChannel(b, ch)
 }
 
-// ====================================
-//          RING BUFFER BENCH
-// ====================================
+// --- Section: Ring buffer bench ---
 
 func benchRing(b *testing.B, r *Ring) {
 	start := make(chan struct{})
