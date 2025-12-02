@@ -8,3 +8,4 @@ Small, focused code that demonstrate common high-load engineering patterns and w
 - [o-direct](o-direct/README.md) — shows why buffered disk I/O is risky for WAL/logs and how O_DIRECT + fsync stabilizes durability and latency.
 - [zero-allocation-parsing](zero-allocation-parsing/README.md) — zero/low-allocation JSON parsing to keep GC and CPU stable at high event rates.
 - [object-pool](object-pool/README.md) — reuses fixed-size buffers via `sync.Pool` to cut allocations and GC churn on hot paths (e.g., WAL/log pages).
+- [panic-deffer-recover](panic-deffer-recover/README.md) — benchmarks defer-in-loops, per-iteration allocations, and panic+recover overhead vs plain errors in hot paths.
