@@ -9,3 +9,4 @@ Small, focused code that demonstrate common high-load engineering patterns and w
 - [zero-allocation-parsing](zero-allocation-parsing/README.md) — zero/low-allocation JSON parsing to keep GC and CPU stable at high event rates.
 - [object-pool](object-pool/README.md) — reuses fixed-size buffers via `sync.Pool` to cut allocations and GC churn on hot paths (e.g., WAL/log pages).
 - [panic-deffer-recover](panic-deffer-recover/README.md) — benchmarks defer-in-loops, per-iteration allocations, and panic+recover overhead vs plain errors in hot paths.
+- [wire-vs-container](wire-vs-container/README.md) — contrasts compile-time DI (Wire), manual containers, and reflection-based Dig to show how DI choices impact allocations and latency.

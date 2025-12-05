@@ -5,8 +5,6 @@ import (
 	"sync"
 	"sync/atomic"
 	"testing"
-
-	"golang.org/x/sys/cpu"
 )
 
 // --- Section: No padding ---
@@ -33,11 +31,11 @@ func (r *RingNoPad) Dequeue() uint64 {
 // --- Section: With padding ---
 
 type RingPad struct {
-	_    cpu.CacheLinePad
+	_    [64]byte
 	head atomic.Uint64
-	_    cpu.CacheLinePad
+	_    [56]byte
 	tail atomic.Uint64
-	_    cpu.CacheLinePad
+	_    [56]byte
 	buf  [1024]uint64
 }
 
