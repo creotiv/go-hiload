@@ -3,6 +3,7 @@
 Small, focused code that demonstrate common high-load engineering patterns and why they matter. Each directory has a README with details and a `go test -bench . -benchmem` runner.
 
 - [cache-line-padding](cache-line-padding/README.md) — avoids false sharing between producer/consumer counters in a ring buffer to cut cache-coherency ping-pong.
+- [cpu-l-cache](cpu-l-cache/README.md) — shows why struct-of-arrays keeps hot fields dense in L1/L2 for compute kernels compared to array-of-structs.
 - [go-routine-pinning](go-routine-pinning/README.md) — uses `runtime.LockOSThread` to stop goroutine migrations that wreck cache/TLB locality in tight loops.
 - [lock-free-ring-buffer](lock-free-ring-buffer/README.md) — single-producer/single-consumer ring using atomics instead of channels for predictable, low-latency queues.
 - [o-direct](o-direct/README.md) — shows why buffered disk I/O is risky for WAL/logs and how O_DIRECT + fsync stabilizes durability and latency.
