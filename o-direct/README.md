@@ -50,7 +50,7 @@ Buffered writes force the kernel to do a lot of work unrelated to your actual wr
 * write amplification inside the filesystem
 * extra work for the NVMe controller
 
-Direct I/O does none of this. It writes **exact bytes to exact LBAs**.
+Direct I/O does none of this. It writes **exact bytes to exact Local Block Addresses**.
 
 Buffered I/O always costs more in the long run — more CPU, more disk ops, more latency spikes.
 
@@ -214,6 +214,20 @@ data → disk
 metadata → disk
 journal commit → disk
 ```
+
+## Aligment
+
+Data alignment is required when using O_DIRECT because direct I/O operations involve Direct Memory Access (DMA) between the user-space buffer and the storage device, bypassing the kernel's page cache. 
+
+The key reasons for this requirement are:
+
+* **Hardware Compatibility**: Storage devices perform I/O in fixed-size units called sectors (or logical blocks), which are typically 512 bytes or 4096 bytes (4KB). The hardware disk controller expects data transfers to start and end on these specific boundaries.
+
+* **Bypassing the Kernel**: In normal, buffered I/O, the kernel handles the "fixing up" of unaligned or partial requests by using an intermediate cache (page cache) and performing read-modify-write operations if necessary. With O_DIRECT, the application takes full responsibility for coordinating the I/O, and there is no kernel buffer to align the data automatically.
+* **Zero-Copy Efficiency**: The primary benefit of O_DIRECT is eliminating data copies between the user buffer and kernel memory. This "zero-copy" approach requires that the user's memory buffer addresses align with the physical memory addresses that the DMA controller needs to access the storage device directly.
+
+* **Performance and Simplicity**: Unaligned transfers would require the kernel to implement bounce buffers and perform read-modify-write cycles, which would add overhead and negate the performance benefits of using O_DIRECT in the first place. 
+
 
 ## Practical example: why O_DIRECT without fsync is dangerous
 

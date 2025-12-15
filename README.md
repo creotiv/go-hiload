@@ -5,9 +5,11 @@ Small, focused code that demonstrate common high-load engineering patterns and w
 - [cache-line-padding](cache-line-padding/README.md) — avoids false sharing between producer/consumer counters in a ring buffer to cut cache-coherency ping-pong.
 - [cpu-l-cache](cpu-l-cache/README.md) — shows why struct-of-arrays keeps hot fields dense in L1/L2 for compute kernels compared to array-of-structs.
 - [go-routine-pinning](go-routine-pinning/README.md) — uses `runtime.LockOSThread` to stop goroutine migrations that wreck cache/TLB locality in tight loops.
+- [goroutine-stack-vs-heap](goroutine-stack-vs-heap/README.md) — demonstrates how goroutine-local stack buffers vanish when the goroutine finishes while heap-backed buffers remain in the process RSS.
 - [lock-free-ring-buffer](lock-free-ring-buffer/README.md) — single-producer/single-consumer ring using atomics instead of channels for predictable, low-latency queues.
 - [o-direct](o-direct/README.md) — shows why buffered disk I/O is risky for WAL/logs and how O_DIRECT + fsync stabilizes durability and latency.
 - [zero-allocation-parsing](zero-allocation-parsing/README.md) — zero/low-allocation JSON parsing to keep GC and CPU stable at high event rates.
 - [object-pool](object-pool/README.md) — reuses fixed-size buffers via `sync.Pool` to cut allocations and GC churn on hot paths (e.g., WAL/log pages).
 - [panic-deffer-recover](panic-deffer-recover/README.md) — benchmarks defer-in-loops, per-iteration allocations, and panic+recover overhead vs plain errors in hot paths.
 - [wire-vs-container](wire-vs-container/README.md) — contrasts compile-time DI (Wire), manual containers, and reflection-based Dig to show how DI choices impact allocations and latency.
+- [interface-value-copy](interface-value-copy/README.md) — shows how boxing large values into `interface{}` copies data and can force per-iteration heap allocations; prefer pointers in hot paths.

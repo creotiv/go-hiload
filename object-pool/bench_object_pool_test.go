@@ -11,9 +11,9 @@ const bufSize = 16 * 1024 // 16 KB realistic WAL/log page
 // Sink is global so compiler cannot eliminate work
 var sink []byte
 
-func consume(b []byte) {
+func consume(b *[]byte) {
 	// Store reference so slice escapes
-	sink = b
+	sink = *b
 	// Prevent compiler from optimizing away usage
 	runtime.KeepAlive(b)
 }
@@ -23,7 +23,7 @@ func consume(b []byte) {
 func BenchmarkNoPoolReal(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		buf := make([]byte, bufSize)
-		consume(buf)
+		consume(&buf)
 	}
 }
 
@@ -31,13 +31,14 @@ func BenchmarkNoPoolReal(b *testing.B) {
 
 var pool = sync.Pool{
 	New: func() interface{} {
-		return make([]byte, bufSize)
+		b := make([]byte, bufSize)
+		return &b // <- only pointers!!!
 	},
 }
 
 func BenchmarkPoolReal(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		buf := pool.Get().([]byte)
+		buf := pool.Get().(*[]byte)
 		consume(buf)
 		pool.Put(buf)
 	}
@@ -49,7 +50,7 @@ func BenchmarkNoPoolParallelReal(b *testing.B) {
 	b.RunParallel(func(pb *testing.PB) {
 		for pb.Next() {
 			buf := make([]byte, bufSize)
-			consume(buf)
+			consume(&buf)
 		}
 	})
 }
@@ -57,7 +58,7 @@ func BenchmarkNoPoolParallelReal(b *testing.B) {
 func BenchmarkPoolParallelReal(b *testing.B) {
 	b.RunParallel(func(pb *testing.PB) {
 		for pb.Next() {
-			buf := pool.Get().([]byte)
+			buf := pool.Get().(*[]byte)
 			consume(buf)
 			pool.Put(buf)
 		}

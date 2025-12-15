@@ -5,18 +5,16 @@ import (
 	"sync"
 	"sync/atomic"
 	"testing"
-
-	"golang.org/x/sys/cpu"
 )
 
 // --- Section: Lock-free SPSC padded ring buffer ---
 
 type Ring struct {
-	_    cpu.CacheLinePad
+	_    [64]byte
 	head atomic.Uint64
-	_    cpu.CacheLinePad
+	_    [56]byte
 	tail atomic.Uint64
-	_    cpu.CacheLinePad
+	_    [56]byte
 	buf  []uint64
 	mask uint64
 }
